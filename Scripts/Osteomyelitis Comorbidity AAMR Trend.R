@@ -10,10 +10,10 @@ vertebral_data <- read_excel("/Users/ksanaka/Desktop/Research/Osteomyelitis/Data
 
 # Add group labels
 diabetes_data   <- diabetes_data   %>% mutate(AAMR = as.numeric(AAMR), Group = "Diabetes")
-foot_data       <- foot_data       %>% mutate(AAMR = as.numeric(AAMR), Group = "Foot Infection")
+foot_data       <- foot_data       %>% mutate(AAMR = as.numeric(AAMR), Group = "Non-Pressure Foot Ulcer")
 pvd_data        <- pvd_data        %>% mutate(AAMR = as.numeric(AAMR), Group = "Peripheral Vascular Disease")
 trauma_data     <- trauma_data     %>% mutate(AAMR = as.numeric(AAMR), Group = "Trauma")
-ulcer_data      <- ulcer_data      %>% mutate(AAMR = as.numeric(AAMR), Group = "Ulcer")
+ulcer_data      <- ulcer_data      %>% mutate(AAMR = as.numeric(AAMR), Group = "Decubitus Ulcer")
 vertebral_data  <- vertebral_data  %>% mutate(AAMR = as.numeric(AAMR), Group = "Vertebral")
 
 # Combine data
@@ -53,10 +53,7 @@ create_apc_plot <- function(df, save_path, label_y_vals) {
     mutate(
       label = paste0(
         "APC (", Group, "): ",
-        round(APC, 2), "% (95% CI: ",
-        round(APC_lower, 2), ", ",
-        round(APC_upper, 2), "; p = ",
-        format.pval(p_value, digits = 2), ")"
+        round(APC, 2), "%"
       ),
       label_x = min(df$Year, na.rm = TRUE) + 1,
       label_y = label_y_vals[Group]
@@ -105,14 +102,14 @@ create_apc_plot <- function(df, save_path, label_y_vals) {
 # Label positions for plot 1
 label_y_1 <- c(
   "Diabetes" = 0.7,
-  "Foot Infection" = 0.6,
+  "Non-Pressure Foot Ulcer" = 0.6,
   "Peripheral Vascular Disease" = 0.5
 )
 
 # Label positions for plot 2
 label_y_2 <- c(
   "Trauma" = 0.7,
-  "Ulcer" = 0.6,
+  "Decubitus Ulcer" = 0.6,
   "Vertebral" = 0.5
 )
 
