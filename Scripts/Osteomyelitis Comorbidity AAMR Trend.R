@@ -2,7 +2,6 @@ source(".Rprofile")
 
 # Load comorbidity data
 diabetes_data <- read_excel("/Users/ksanaka/Desktop/Research/Osteomyelitis/Data/Osteomyelitis_Diabetes_Mortality_Trend.xlsx", sheet = "Analyzable")
-foot_data <- read_excel("/Users/ksanaka/Desktop/Research/Osteomyelitis/Data/Osteomyelitis_Foot_Mortality_Trend.xlsx", sheet = "Analyzable")
 pvd_data <- read_excel("/Users/ksanaka/Desktop/Research/Osteomyelitis/Data/Osteomyelitis_PVD_Mortality_Trend.xlsx", sheet = "Analyzable")
 trauma_data <- read_excel("/Users/ksanaka/Desktop/Research/Osteomyelitis/Data/Osteomyelitis_Trauma_Mortality_Trend.xlsx", sheet = "Analyzable")
 ulcer_data <- read_excel("/Users/ksanaka/Desktop/Research/Osteomyelitis/Data/Osteomyelitis_Ulcer_Mortality_Trend.xlsx", sheet = "Analyzable")
@@ -10,14 +9,13 @@ vertebral_data <- read_excel("/Users/ksanaka/Desktop/Research/Osteomyelitis/Data
 
 # Add group labels
 diabetes_data   <- diabetes_data   %>% mutate(AAMR = as.numeric(AAMR), Group = "Diabetes")
-foot_data       <- foot_data       %>% mutate(AAMR = as.numeric(AAMR), Group = "Non-Pressure Foot Ulcer")
 pvd_data        <- pvd_data        %>% mutate(AAMR = as.numeric(AAMR), Group = "Peripheral Vascular Disease")
 trauma_data     <- trauma_data     %>% mutate(AAMR = as.numeric(AAMR), Group = "Trauma")
 ulcer_data      <- ulcer_data      %>% mutate(AAMR = as.numeric(AAMR), Group = "Decubitus Ulcer")
 vertebral_data  <- vertebral_data  %>% mutate(AAMR = as.numeric(AAMR), Group = "Vertebral")
 
 # Combine data
-data_plot1 <- bind_rows(diabetes_data, foot_data, pvd_data)
+data_plot1 <- bind_rows(diabetes_data, pvd_data)
 data_plot2 <- bind_rows(trauma_data, ulcer_data, vertebral_data)
 
 # Function to create APC plot and return stats
@@ -102,7 +100,6 @@ create_apc_plot <- function(df, save_path, label_y_vals) {
 # Label positions for plot 1
 label_y_1 <- c(
   "Diabetes" = 0.7,
-  "Non-Pressure Foot Ulcer" = 0.6,
   "Peripheral Vascular Disease" = 0.5
 )
 
@@ -133,6 +130,11 @@ apc2 <- result2$apc_stats
 # Display plots
 print(plot1)
 print(plot2)
+
+# Save APC tables as CSV
+write_csv(apc1, "/Users/ksanaka/Desktop/Research/Osteomyelitis/Writing/APC_Table_Comorbidities_Plot1.csv")
+write_csv(apc2, "/Users/ksanaka/Desktop/Research/Osteomyelitis/Writing/APC_Table_Comorbidities_Plot2.csv")
+
 
 # Clean environment
 rm(list = ls())
